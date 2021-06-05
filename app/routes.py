@@ -6,6 +6,7 @@ from flask import render_template, redirect, url_for, request, session
 def home():
     # Create Organization
     sqldb.sql_execute(sqldb.create_account("Microsoft", "microsoft@microsoft.com", "securepass"))
+    sqldb.sql_execute(sqldb.create_account("Google", "google@google.com", "googlemypass"))
 
     # Create Users
     sqldb.sql_execute(sqldb.create_user("ff7b23e8-0cc5-35fe-a472-8c1c277494ea", "John", "Smith", "johnsmith@microsoft.com", "smithpass", False))
@@ -29,6 +30,20 @@ def home():
 
     # Remove User
     sqldb.remove_user("ff7b23e8-0cc5-35fe-a472-8c1c277494ea", "microsoft@microsoft.com", "heatherwills@microsoft.com", "securepass")
+
+    print("\n\n-----------------------------------------------------------------------------------------------------------------------------\n")
+    # Print Organizations
+    sqldb.print_table("accounts")
+    print()
+    # Print Users
+    sqldb.print_table("users")
+    print()
+    # Print Reports
+    sqldb.print_table("reports")
+    print()
+
+    # Remove Organization
+    sqldb.remove_account("ff7b23e8-0cc5-35fe-a472-8c1c277494ea", "microsoft@microsoft.com", "securepass")
 
     print("\n\n-----------------------------------------------------------------------------------------------------------------------------\n")
     # Print Organizations

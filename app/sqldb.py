@@ -58,13 +58,37 @@ def create_report(organization_id: str, user_id: str, severity: int, report: str
     """.format(id, organization_id, user_id, severity, report)
 
 
-def get_user(user_email, user_password):
+def get_account(organization_id, organization_email, organization_password):
+    with conn.cursor() as cur:
+        cur.execute("""
+        SELECT * FROM accounts
+        WHERE (id = '{0}' AND email = '{1}' AND password = '{2}');
+        """.format(organization_id, organization_email, encrypt_pass(organization_password)))
+        return cur.fetchone()
+
+
+def get_user(organization_id, user_email, user_password):
     with conn.cursor() as cur:
         cur.execute("""
         SELECT * FROM users
-        WHERE (email = '{0}' AND password = '{1}')
-        """.format(user_email, encrypt_pass(user_password)))
+        WHERE (organization_id = '{0}' AND email = '{1}' AND password = '{2}');
+        """.format(organization_id, user_email, encrypt_pass(user_password)))
         return cur.fetchone()
+
+
+def remove_account(organization_id, organization_email, organization_password): # returns boolean if deletion was successful
+    with conn.cursor() as cur:
+        if get_account(organization_id, organization_email, organization_password) != None:
+            cur.execute("""
+            DELETE FROM users
+            WHERE organization_id = '{0}';
+            DELETE FROM reports
+            WHERE organization_id = '{0}';
+            DELETE FROM accounts
+            WHERE id = '{0}';
+            """.format(organization_id))
+            return True
+        return False
 
 
 def remove_user(organization_id, organization_email, user_email, organization_password): # returns boolean if deletion was successful
@@ -72,7 +96,7 @@ def remove_user(organization_id, organization_email, user_email, organization_pa
         if get_user(organization_id, organization_email, organization_password) != None:
             cur.execute("""
             DELETE FROM users
-            WHERE (organization_id = '{0}' AND email = '{1}')
+            WHERE (organization_id = '{0}' AND email = '{1}');
             """.format(organization_id, user_email))
             return True
         return False
@@ -87,6 +111,7 @@ def print_table(table_name: str):
         for row in cur.fetchall():
             print(row)
 
+
 def drop_tables():
     return """
     DROP TABLE IF EXISTS accounts;
@@ -96,6 +121,3 @@ def drop_tables():
 
 def encrypt_pass(password: str):
     return hashlib.sha256(password.encode()).hexdigest()
-
-# def check_pass(saved_password: str, password: str):
-#     return saved_password == hashlib.sha256(password.encode()).hexdigest()
