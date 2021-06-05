@@ -1,0 +1,109 @@
+*{
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+
+.main-text{
+	position: absolute;
+	width:600px;
+	height:300px;
+	margin: 20% 30%;
+	
+}
+
+
+.body{
+	height:100%;
+	font-size: 1rem;
+}
+
+.row.content {height: 600px;}
+
+.bla-bla{
+	border-radius: 25px;
+  background: #73AD21;
+  padding: 20px;
+  border:1px solid #333;
+}
+.bla-bla p{
+	font-size:20px;
+}
+.bla-bla:hover {
+  transform: scale(1.08);
+}
+.bla-bla:hover .title a {
+  color: #2487ce;
+}
+.table-format{
+	
+	font-size:15px;
+}
+.nana{
+	display:inline-block;
+}
+.nana a{
+	
+	border:1px solid #333;
+}
+
+
+
+
+
+
+.side-button{
+  border: 1px solid #333;
+}
+
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+
+
+
+
+/* Add some margins for each label */
+.form-inline label {
+  margin: 5px 10px 5px 0;
+}
+
+
+
+.form-inline button:hover {
+  background-color: royalblue;
+}
+
+/* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
+@media (max-width: 800px) {
+  .form-inline input {
+    margin: 10px 0;
+  }
+
+  .form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+h3 {
+  text-align: center;
+}
+
+
+.bg-primary {background-color:#007aeb;color:#fff;}
+.bg-gray {background-color:#cccccc;}
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #6a85b6;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, rgba(106, 133, 182, 0.5), rgba(186, 200, 224, 0.5));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, rgba(106, 133, 182, 0.5), rgba(186, 200, 224, 0.5))
+}
