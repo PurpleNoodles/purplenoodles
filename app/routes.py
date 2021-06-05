@@ -1,9 +1,14 @@
 from flask.templating import render_template
-from app import app, config, sqldb
+from app import app, config, sqldb, nlp
 from flask import render_template, redirect, url_for, request, session
 
 @app.route('/')
 def home():
+    
+    return config
+
+
+def test_sqldb():
     # Create Organizations
     sqldb.sql_execute(sqldb.create_account("Microsoft", "microsoft@microsoft.com", "securepass"))
     sqldb.sql_execute(sqldb.create_account("Google", "google@google.com", "googlemypass"))
@@ -94,5 +99,3 @@ def home():
 
     # Drop tables
     sqldb.sql_execute(sqldb.drop_tables())
-    return config
-
