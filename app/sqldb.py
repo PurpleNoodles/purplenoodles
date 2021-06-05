@@ -67,16 +67,36 @@ def get_account(organization_id, organization_email, organization_password):
         return cur.fetchone()
 
 
-def get_user(organization_id, user_email, user_password):
+def get_user(organization_id: str, user_email: str, organization_email: str=None, user_password: str=None, organization_password: str=None):
     with conn.cursor() as cur:
-        cur.execute("""
-        SELECT * FROM users
-        WHERE (organization_id = '{0}' AND email = '{1}' AND password = '{2}');
-        """.format(organization_id, user_email, encrypt_pass(user_password)))
+        if user_password != None:
+            cur.execute("""
+            SELECT * FROM users
+            WHERE (organization_id = '{0}' AND email = '{1}' AND password = '{2}');
+            """.format(organization_id, user_email, encrypt_pass(user_password)))
+        elif organization_email != None and organization_password != None:
+            if get_account(organization_id, organization_email, organization_password) != None:
+                cur.execute("""
+                SELECT * FROM users
+                WHERE (organization_id = '{0}' AND email = '{1}');
+                """.format(organization_id, user_email))
+            else:
+                return None
+        else:
+            return None
         return cur.fetchone()
 
 
-def remove_account(organization_id, organization_email, organization_password): # returns boolean if deletion was successful
+def get_report(organization_id: str, report_id: str):
+    with conn.cursor() as cur:
+        cur.execute("""
+        SELECT * FROM reports
+        WHERE (organization_id = '{0}' AND id = '{1}');
+        """.format(organization_id, report_id))
+        return cur.fetchone()
+
+
+def remove_account(organization_id: str, organization_email: str, organization_password: str): # returns boolean if deletion was successful
     with conn.cursor() as cur:
         if get_account(organization_id, organization_email, organization_password) != None:
             cur.execute("""
@@ -91,13 +111,30 @@ def remove_account(organization_id, organization_email, organization_password): 
         return False
 
 
-def remove_user(organization_id, organization_email, user_email, organization_password): # returns boolean if deletion was successful
+def remove_user(organization_id: str, organization_email: str, user_email: str, organization_password: str, remove_user_reports: bool): # returns boolean if deletion was successful
     with conn.cursor() as cur:
-        if get_user(organization_id, organization_email, organization_password) != None:
+        if get_user(organization_id, user_email, organization_email=organization_email, organization_password=organization_password) != None:
+            user_id = get_user(organization_id, user_email, organization_email=organization_email, organization_password=organization_password)[0]
+            if remove_user_reports:
+                cur.execute("""
+                DELETE FROM reports
+                WHERE (organization_id = '{0}' AND user_id = '{1}');
+                """.format(organization_id, user_id))
             cur.execute("""
             DELETE FROM users
             WHERE (organization_id = '{0}' AND email = '{1}');
             """.format(organization_id, user_email))
+            return True
+        return False
+
+
+def remove_report(organization_id: str, organization_email: str, report_id: str, organization_password: str):
+    with conn.cursor() as cur:
+        if get_account(organization_id, organization_email, organization_password) != None and get_report(organization_id, report_id) != None:
+            cur.execute("""
+            DELETE FROM reports
+            WHERE (organization_id = '{0}' AND id = '{1}')
+            """.format(organization_id, report_id))
             return True
         return False
 
