@@ -46,17 +46,17 @@
     			<div class="container">
     				<div class="row bla-bla">
     					<div class="col">
-    						<h2>Register</h2>
+    						<h2 style="color:yellow;">Register</h2>
     						<div class="row">
                   <form action="/action_page.php">
-                    <label for="orgID">Organization name:</label>
+                    <label style="color:yellow;" for="orgID">Organization name:</label>
                     <br>
                     <input type="text" id="orgID" name="orgID"><br><br>
                     </form>
                 </div>
                 <div class="row">
                   <form action="/action_page.php">
-                    <label for="password">Organization email: </label>
+                    <label for="password" style="color:yellow;">Organization email: </label>
                     <br>
                     <input type="text" id="password" name="password"><br><br>
                     
@@ -64,17 +64,28 @@
                 </div>
                 <div class="row">
                   <form action="/action_page.php">
-                    <label for="password">Password: </label>
+                    <label for="password" style="color:yellow;">Password: </label>
                     <br>
-                    <input type="text" id="password" name="password"><br><br>
+                    <input type="text" id="password" name="password" required="required" ><br><br>
                     
                   </form>
                 </div>
                 <div class="row">
                   <form action="/action_page.php">
-                    <label for="password">Confirm password: </label>
+                    <label for="password" style="color:yellow;">Confirm password: </label>
                     <br>
-                    <input type="text" id="password" name="password"><br><br>
+                    <input type="text" id="confirmpassword" name="confirmpassword" oninput="check(this)"><br><br>
+                    <script language='javascript' type='text/javascript'>
+                      function check(input) {
+                         if (input.value != document.getElementById('password').value) {
+                            input.setCustomValidity('Password Must be Matching.');
+                          } 
+                        else {
+                         // input is valid -- reset the error message
+                        input.setCustomValidity('');
+                              }
+                            }
+                    </script>
                     <input type="submit" value="Register">
                   </form>
                 </div>
