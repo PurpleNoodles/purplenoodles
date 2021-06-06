@@ -58,28 +58,52 @@ def create_report(organization_id: str, user_id: str, severity: int, report: str
     """.format(id, organization_id, user_id, severity, report)
 
 
-def get_account(organization_id, organization_email, organization_password):
+def get_account(organization_email, organization_password):
     with conn.cursor() as cur:
         cur.execute("""
+        CREATE TABLE IF NOT EXISTS accounts (
+            id char(36) NOT NULL UNIQUE,
+            name varchar NOT NULL UNIQUE,
+            email varchar NOT NULL UNIQUE,
+            password varchar NOT NULL
+        );
         SELECT * FROM accounts
-        WHERE (id = '{0}' AND email = '{1}' AND password = '{2}');
-        """.format(organization_id, organization_email, encrypt_pass(organization_password)))
+        WHERE (email = '{0}' AND password = '{1}');
+        """.format(organization_email, encrypt_pass(organization_password)))
         return cur.fetchone()
 
 
-def get_user(organization_id: str, user_email: str, organization_email: str=None, user_password: str=None, organization_password: str=None):
+def get_user(user_email: str, organization_email: str=None, user_password: str=None, organization_password: str=None):
     with conn.cursor() as cur:
         if user_password != None:
             cur.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id char(36) NOT NULL UNIQUE,
+                organization_id char(36) NOT NULL,
+                firstname varchar NOT NULL,
+                lastname varchar NOT NULL,
+                email varchar NOT NULL UNIQUE,
+                password varchar NOT NULL,
+                type boolean NOT NULL
+            );
             SELECT * FROM users
-            WHERE (organization_id = '{0}' AND email = '{1}' AND password = '{2}');
-            """.format(organization_id, user_email, encrypt_pass(user_password)))
+            WHERE (email = '{0}' AND password = '{1}');
+            """.format(user_email, encrypt_pass(user_password)))
         elif organization_email != None and organization_password != None:
-            if get_account(organization_id, organization_email, organization_password) != None:
+            if get_account(organization_email, organization_password) != None:
                 cur.execute("""
+                CREATE TABLE IF NOT EXISTS users (
+                    id char(36) NOT NULL UNIQUE,
+                    organization_id char(36) NOT NULL,
+                    firstname varchar NOT NULL,
+                    lastname varchar NOT NULL,
+                    email varchar NOT NULL UNIQUE,
+                    password varchar NOT NULL,
+                    type boolean NOT NULL
+                );
                 SELECT * FROM users
-                WHERE (organization_id = '{0}' AND email = '{1}');
-                """.format(organization_id, user_email))
+                WHERE (email = '{0}');
+                """.format(user_email))
             else:
                 return None
         else:
@@ -90,6 +114,13 @@ def get_user(organization_id: str, user_email: str, organization_email: str=None
 def get_report(organization_id: str, report_id: str):
     with conn.cursor() as cur:
         cur.execute("""
+        CREATE TABLE IF NOT EXISTS reports (
+            id char(36) NOT NULL UNIQUE,
+            organization_id char(36) NOT NULL,
+            user_id char(36) NOT NULL,
+            severity smallint NOT NULL,
+            report text NOT NULL
+        );
         SELECT * FROM reports
         WHERE (organization_id = '{0}' AND id = '{1}');
         """.format(organization_id, report_id))

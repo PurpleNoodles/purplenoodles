@@ -2,6 +2,8 @@ from flask.templating import render_template
 from app import app, config, sqldb, nlp
 from flask import render_template, redirect, url_for, request, session
 
+app.secret_key = config['SECRET_KEY']
+
 report_text = """
 I am writing to inform you that my immediate supervisor, Joseph Adams, has been sexually harassing me while I am trying to perform my work duties here at Johnson Publishing. The harassment started about two months ago. Mr. Adams came up behind me at my desk, started rubbing my shoulders, and told me that if I would start spending more time with him then I could advance into another position quickly. I told him I wasn’t interested, and he responded, “not yet.” Another employee, Sarah Atkins, was seated two desks away and looked toward me and shook her head, so I am sure she overheard the conversation. 
 
@@ -12,8 +14,64 @@ Two days ago, on Wednesday of this week, Mr. Adams told me that if I couldn’t 
 This kind of behavior is unacceptable, and I am sure that Johnson Publishing does not condone this activity. I ask you to properly investigate this matter and put an end to this inappropriate treatment.
 """
 
+# Drop tables
+# sqldb.sql_execute(sqldb.drop_tables())
+
 @app.route('/')
+def landing():
+    if 'user_id' in session:
+        print(session['user_id'])
+    return render_template('landing.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if 'user_id' in session:
+        return redirect('/home')
+    if request.method == 'POST':
+        sqldb.sql_execute(sqldb.create_account(
+            request.form['orgName'],
+            request.form['orgEmail'],
+            request.form['password']
+        ))
+        return redirect('/login')
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'user_id' in session:
+        return redirect('/home')
+    if request.method == 'POST':
+        db_user = sqldb.get_user(
+            request.form['email'],
+            user_password=request.form['password']
+        )
+        if db_user != None:
+            session['user_id'] = db_user[0]
+            session['organization_id'] = db_user[1]
+            session['firstname'] = db_user[2]
+            session['lastname'] = db_user[3]
+            session['email'] = db_user[4]
+            session['type'] = db_user[6]
+        return redirect('/home')
+    return render_template('login.html')
+
+@app.route('/home')
 def home():
+    if 'user_id' not in session:
+        return redirect('/')
+    return render_template('users.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    session.pop('organization_id', None)
+    session.pop('firstname', None)
+    session.pop('lastname', None)
+    session.pop('email', None)
+    session.pop('type', None)
+    return redirect('/')
+
+def test_reporting():
     the_report = nlp.generate_report(report_text, {
         'user_id': '9e29f498-2b9f-3c1e-8fd6-fb74a6fd26f8',
         'organization_id': 'ff7b23e8-0cc5-35fe-a472-8c1c277494ea',
@@ -22,7 +80,6 @@ def home():
         'email': 'johnsmith@microsoft.com'
     })
     return the_report['report']
-
 
 def test_sqldb():
     # Create Organizations
