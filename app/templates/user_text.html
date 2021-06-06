@@ -6,13 +6,22 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <link href="{{ url_for('static', filename='asset_landing_page/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='asset_landing_page/css/style.css') }}" rel="stylesheet">
+<style>
+a{
+  color:#FED424;
+}
+a:hover{
+  color: #FED424;
+  background-color:purple;
+}
+</style>
 </head>
 
 <body>
 <!-- .navbar -->
 <div class="container">
-  <nav class="navbar navbar-expand-md navbar-light bg-gray">
-    <a href="" class="navbar-brand">PurpleNoodles
+  <nav class="navbar navbar-expand-md navbar-light bg-purple" style="font-family: 'Century gothic', sans-serif;">
+    <a href="" class="navbar-brand" style="color:yellow;">PurpleNoodles
     <!--img src="" alt="logo" width="30" height="24 class="d-inline-block align-top"-->
     </a>
     <button
@@ -29,15 +38,18 @@
     <div class="collapse navbar-collapse" id = "toggleMobileMenu">
     <ul class="navbar-nav text-center ">
       <li>
-        <a class="nav-link" href="">Home</a>
+        <a class="nav-link" href="" style="color:yellow;">Home</a>
       </li>
       <li>
-        <a class="nav-link" href="">About</a>
+        <a class="nav-link" href="" style="color:yellow;">About</a>
       </li>
     </ul>
+    <div class="mx-auto d-sm-flex d-block flex-sm-nowrap" style="font-size:27px; font-family: 'Noto Sans JP', sans-serif;">
+    Patrick jane
+    </div>
     </div>
     <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
-    <a class="nav-link logout-button" href="">Logout</a>
+    <a class="nav-link logout-button" href="" style="border:2px solid #333; color:#FED424">Logout</a>
     </div>
   </nav>
 </div>
@@ -72,7 +84,21 @@
                     Enter your text here...
                     </textarea>
                   <br><br>
+                  <div class="row">
+                  <div class="col-4">
+                  <label for="complaint">Type:</label>
+                      <select name="types" id="types">
+                      <option value="Complaint">Complaint</option>
+                      <option value="Scenario">Scenario</option>
+                      </select>
+                      <br><br>
+                   </div> 
+                   </div> 
+                   <div class="row  justify-content-center align-items-center"> 
+                   <div class="col-3">
                   <input type="submit">
+                    </div>
+                    </div>
                   </form>
               </div>
               </div>

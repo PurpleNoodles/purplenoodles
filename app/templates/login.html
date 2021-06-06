@@ -6,14 +6,25 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <link href="{{ url_for('static', filename='asset_landing_page/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='asset_landing_page/css/style.css') }}" rel="stylesheet">
+<style>
+a{
+  color:#FED424;
+}
+
+a:hover{
+  color: #FED424;
+  background-color:purple;
+}
+ul.nav a:hover { color: #fff !important; }
+</style>
 </head>
 
-<body>
+<body style="color:purple;">
 
  <!-- .navbar -->
 <div class="container">
-  <nav class="navbar navbar-expand-md navbar-light bg-gray">
-    <a href="" class="navbar-brand">PurpleNoodles
+  <nav class="navbar navbar-expand-md navbar-light bg-purple" style="font-family: 'Century gothic', sans-serif;">
+    <a href="" class="navbar-brand" style="color:#FED424;">PurpleNoodles
     <!--img src="" alt="logo" width="30" height="24 class="d-inline-block align-top"-->
     </a>
     <button
@@ -30,10 +41,10 @@
     <div class="collapse navbar-collapse" id = "toggleMobileMenu">
     <ul class="navbar-nav text-center">
       <li>
-        <a class="nav-link" href="">Home</a>
+        <a class="nav-link" href="" style="color:#FED424;">Home</a>
       </li>
       <li>
-        <a class="nav-link" href="">About</a>
+        <a class="nav-link" href="" style="color:#FED424;">About</a>
       </li>
     </ul>
     </div>
@@ -45,21 +56,21 @@
   		<div class="row align-items-center justify-content-center content">
     		<div class="col-sm-5 sidenav">
     			<div class="container">
-    				<div class="row bla-bla">
+    				<div class="row box">
     					<div class="col">
     						<h2 style="color:yellow;">Login</h2>
     						<div class="row">
                   <form action="/action_page.php">
-                    <label for="orgID" style="color:yellow;">Organization ID:</label>
+                    <label for="orgID" style="color:yellow;"></label>
                     <br>
-                    <input type="text" id="orgID" name="orgID"><br><br>
+                    <input type="text" id="orgID" placeholder="User email" style="width:185px;" name="orgID"><br><br>
                     </form>
                 </div>
                 <div class="row">
                   <form action="/action_page.php">
-                    <label for="password" style="color:yellow;">Password: </label>
+                    <label for="password" style="color:yellow;"></label>
                     <br>
-                    <input type="text" id="password" name="password"><br><br>
+                    <input type="text" id="password" name="password" placeholder="Password" style="width:185px;"><br><br>
                     <input type="submit" value="Login">
                   </form>
                 </div>

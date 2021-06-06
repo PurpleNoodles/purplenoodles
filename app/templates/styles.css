@@ -24,11 +24,24 @@
 	border-radius: 25px;
   background: purple;
   padding: 20px;
-  border:1px solid #333;
+  border:2px solid #fff;
+  width:280px;
 }
 .bla-bla p{
 	font-size:20px;
 }
+.box{
+  border-radius: 25px;
+  background: purple;
+  padding: 20px;
+  border:2px solid #fff;
+  
+}
+.box p{
+  font-size:20px;
+
+}
+
 .bla-bla:hover {
   transform: scale(1.08);
 }
@@ -44,7 +57,7 @@
 }
 .nana a{
 	
-	border:1px solid #333;
+	border:2px solid #fff;
 }
 
 
@@ -96,6 +109,7 @@ h3 {
 
 .bg-primary {background-color:#007aeb;color:#fff;}
 .bg-gray {background-color:#cccccc;}
+.bg-purple {background-color:#8E44AD;}
 
 .gradient-custom {
   /* fallback for old browsers */
@@ -106,4 +120,8 @@ h3 {
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: linear-gradient(to right, rgba(106, 133, 182, 0.5), rgba(186, 200, 224, 0.5))
+}
+
+input[type=submit] {
+    width: 5em;  height: 2em;
 }
