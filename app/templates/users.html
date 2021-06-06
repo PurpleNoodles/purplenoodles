@@ -77,8 +77,8 @@ logout-button{
             <div class="border-end bg-white" id="sidebar-wrapper">
                 
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Users</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Report</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/users">Users</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/report">Report</a>
                 </div>
 
             </div>
@@ -122,7 +122,7 @@ logout-button{
                 </div>
                 <div class="row align-items-center justify-content-center ">
                 <div class="col-9">
-                  <form action="/action_page.php" class="form-inline">
+                  <form id="create_user" method="POST" class="form-inline">
                     
                     <input type="text" id="firstname" name="firstname" size="2" style="width:80px;" placeholder="First Name">
                     <input type="text" id="lastname" name="lastname" size="2" style="width:80px;" placeholder="Last Name">
@@ -151,14 +151,14 @@ logout-button{
                 </div>
                 <div class="row align-items-center justify-content-center ">
                 <div class="col-6">
-                  <form action="/action_page.php" class="form-inline">
+                  <form id="delete_user" method="POST" class="form-inline">
                     
                     <label for="email"></label><br>
                     <input type="email" id="email" name="email" size="2" style="width:110px;" placeholder="Email">
                     <label for="password"></label>
                     <input type="password" id="password" style="width:170px;" name="password" size="2" placeholder="Organization Password">
 
-                    <input type="submit" value="Delete user" style="font-size:15px;" onclick="areYouSure()">
+                    <input type="submit" value="Delete user" style="font-size:20px;" onclick="areYouSure()">
                     
                   </form>
                 </div>

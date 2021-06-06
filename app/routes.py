@@ -14,8 +14,9 @@ Two days ago, on Wednesday of this week, Mr. Adams told me that if I couldn’t 
 This kind of behavior is unacceptable, and I am sure that Johnson Publishing does not condone this activity. I ask you to properly investigate this matter and put an end to this inappropriate treatment.
 """
 
+
 # Drop tables
-# sqldb.sql_execute(sqldb.drop_tables())
+sqldb.sql_execute(sqldb.drop_tables())
 
 @app.route('/')
 def landing():
@@ -55,11 +56,50 @@ def login():
         return redirect('/home')
     return render_template('login.html')
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
+    
     if 'user_id' not in session:
         return redirect('/')
-    return render_template('users.html')
+    else:
+        if session['type']:
+            return render_template('users.html')
+        else:
+            return render_template('user_text.html')
+
+@app.route('/users')
+@app.route('/user_text')
+def user_redirect():
+    if 'user_id' not in session:
+        return redirect('/')
+    else:
+        return redirect('/home')
+
+@app.route('/report', methods=['GET', 'POST'])
+def report():
+    if 'user_id' not in session:
+        return redirect('/')
+    else:
+        if session['type']:
+            sqldb.sql_execute(sqldb.create_report('ff7b23e8-0cc5-35fe-a472-8c1c277494ea', '9e29f498-2b9f-3c1e-8fd6-fb74a6fd26f8', -3, test_reporting()))
+            # sqldb.print_table("reports")
+            return render_template('report.html')
+        else:
+            return redirect('/home')
+
+@app.route('/report/<report_id>')
+def open_report(report_id: str):
+    if 'user_id' not in session:
+        return redirect('/')
+    else:
+        if session['type']:
+            found_report = sqldb.get_report(session['organization_id'], str(report_id))
+            if found_report != None:
+                return str(found_report[4])
+            else:
+                return "Could not find report or you do not have access to this report."
+        else:
+            return redirect('/home')
 
 @app.route('/logout')
 def logout():
@@ -79,7 +119,7 @@ def test_reporting():
         'lastname': 'Smith',
         'email': 'johnsmith@microsoft.com'
     })
-    return the_report['report']
+    return str(the_report['report'])
 
 def test_sqldb():
     # Create Organizations
@@ -169,6 +209,3 @@ def test_sqldb():
     # Print Reports
     sqldb.print_table("reports")
     print()
-
-    # Drop tables
-    sqldb.sql_execute(sqldb.drop_tables())
